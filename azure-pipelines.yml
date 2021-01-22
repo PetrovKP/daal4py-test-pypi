@@ -25,7 +25,7 @@ jobs:
   - script: python --version
     displayName: 'Check Python'
   - script:
-      conda install -c daal4py
+      conda install -c intel daal4py
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script:
