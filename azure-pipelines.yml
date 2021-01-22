@@ -12,21 +12,14 @@ jobs:
 - job: daalp4yPyP
   strategy:
     matrix:
-      ubuntu - python37:
+      ubuntu:
         imageName: 'ubuntu-20.04'
-        python.version: '3.7'
   pool:
     vmImage: $(imageName)
   steps:
-  - task: UsePythonVersion@0
-    displayName: 'Use Python $(python.version)'
-    inputs:
-      versionSpec: '$(python.version)'
-  - script: python --version
-    displayName: 'Check Python'
   - script:
       conda update -q -y conda
-      conda create -n CB -c intel python=3.7 daal4py scikit-learn
+      conda create -q -y -n CB -c intel python=3.7 daal4py scikit-learn
       pip install pytest pandas
     displayName: 'Install daal4py'
   - script:
