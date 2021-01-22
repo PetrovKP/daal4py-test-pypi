@@ -17,12 +17,12 @@ jobs:
   pool:
     vmImage: $(imageName)
   steps:
-  - script:
+  - script: |
       conda update -q -y conda
       conda create -q -y -n CB -c intel python=3.7 daal4py scikit-learn
       pip install pytest pandas
     displayName: 'Install daal4py'
-  - script:
+  - script: |
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda activate CB
       python -c "import daal4py"
