@@ -12,42 +12,9 @@ jobs:
 - job: daalp4yPyP
   strategy:
     matrix:
-      ubuntu - python39:
-        imageName: 'ubuntu-latest'
-        python.version: '3.9'
       ubuntu - python38:
         imageName: 'ubuntu-latest'
         python.version: '3.8'
-      ubuntu - python37:
-        imageName: 'ubuntu-latest'
-        python.version: '3.7'
-      ubuntu - python36:
-        imageName: 'ubuntu-latest'
-        python.version: '3.6'
-      mac - python39:
-        imageName: 'macos-latest'
-        python.version: '3.9'
-      mac - python38:
-        imageName: 'macos-latest'
-        python.version: '3.8'
-      mac - python37:
-        imageName: 'macos-latest'
-        python.version: '3.7'
-      mac - python36:
-        imageName: 'macos-latest'
-        python.version: '3.6'
-      windows - python39:
-        imageName: 'windows-latest'
-        python.version: '3.9'
-      windows - python38:
-        imageName: 'windows-latest'
-        python.version: '3.8'
-      windows - python37:
-        imageName: 'windows-latest'
-        python.version: '3.7'
-      windows - python36:
-        imageName: 'windows-latest'
-        python.version: '3.6'
   pool:
     vmImage: $(imageName)
   steps:
@@ -58,7 +25,7 @@ jobs:
   - script: python --version
     displayName: 'Check Python'
   - script:
-      pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
+      pip install 
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script:
