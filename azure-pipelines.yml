@@ -13,7 +13,7 @@ jobs:
   strategy:
     matrix:
       ubuntu - python37:
-        imageName: 'ubuntu-latest'
+        imageName: 'ubuntu-20.04'
         python.version: '3.7'
   pool:
     vmImage: $(imageName)
