@@ -23,11 +23,11 @@ jobs:
       ubuntu - python37:
         imageName: 'ubuntu-latest'
         python.version: '3.7'
-        pythonpypi: '37'
+        pythonpypi: '37m'
       ubuntu - python36:
         imageName: 'ubuntu-latest'
         python.version: '3.6'
-        pythonpypi: '36'
+        pythonpypi: '36m'
   pool:
     vmImage: $(imageName)
   steps:
