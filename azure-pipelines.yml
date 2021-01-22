@@ -9,45 +9,24 @@ pr:
     - main
 
 jobs:
-- job: Ubuntu2004
+- job: daalp4yPyP
   pool:
     
     maxParallel: 2
   strategy:
     matrix:
-      linux:
+      ubuntu - python9:
         imageName: 'ubuntu-16.04'
-        matrix:
-          Python39:
-            python.version: '3.9'
-          Python38:
-            python.version: '3.8'
-          Python37:
-            python.version: '3.7'
-          Python36:
-            python.version: '3.6'
-      mac:
+        python.version: '3.9'
+      ubuntu - python8:
+        imageName: 'ubuntu-16.04'
+        python.version: '3.8'
+      mac - python9:
         imageName: 'macos-10.14'
-        matrix:
-          Python39:
-            python.version: '3.9'
-          Python38:
-            python.version: '3.8'
-          Python37:
-            python.version: '3.7'
-          Python36:
-            python.version: '3.6'
-      windows:
+        python.version: '3.9'
+      windows - python9:
         imageName: 'vs2017-win2016'
-        matrix:
-          Python39:
-            python.version: '3.9'
-          Python38:
-            python.version: '3.8'
-          Python37:
-            python.version: '3.7'
-          Python36:
-            python.version: '3.6'
+        python.version: '3.9'
 
   steps:
   - script: python --version
