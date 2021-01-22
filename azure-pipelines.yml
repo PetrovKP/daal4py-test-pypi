@@ -1,0 +1,47 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - master
+
+pr:
+  branches:
+    include:
+    - master
+
+jobs:
+- job: Ubuntu2004
+pool:
+  vmImage: 'ubuntu-20.04'
+  maxParallel: 2
+  strategy:
+    matrix:
+      Python39:
+        python.version: '3.9'
+      Python38:
+        python.version: '3.8'
+      Python37:
+        python.version: '3.7'
+      Python36:
+        python.version: '3.6'
+  steps:
+  - script: python --version
+    displayName: 'Check Python'
+  - script:
+      pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
+      pip install pytest pandas scikit-learn
+    displayName: 'Install daal4py'
+  - script:
+      python -c "import daal4py"
+      git clone https://github.com/IntelPython/daal4py.git
+      cd daal4py
+      python -m unittest discover -v -s tests -p test*.py
+      pytest --pyargs daal4py/sklearn/
+      python examples/run_examples.py
+      python -m daal4py examples/sycl/sklearn_sycl.py
+    displayName: 'Testing daal4py'
+
