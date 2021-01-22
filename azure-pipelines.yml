@@ -10,9 +10,6 @@ pr:
 
 jobs:
 - job: daalp4yPyP
-  pool:
-    
-    maxParallel: 2
   strategy:
     matrix:
       ubuntu - python39:
@@ -51,6 +48,8 @@ jobs:
       windows - python36:
         imageName: 'windows-latest'
         python.version: '3.6'
+  pool:
+    vmImage: $(imageName)
   steps:
   - task: UsePythonVersion@0
     displayName: 'Use Python $(python.version)'
