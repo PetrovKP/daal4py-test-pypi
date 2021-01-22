@@ -13,19 +13,19 @@ jobs:
   strategy:
     matrix:
       ubuntu - python39:
-        imageName: 'ubuntu-19.04'
+        imageName: 'ubuntu-20.04'
         python.version: '3.9'
         pythonpypi: 'cp39-cp39'
       ubuntu - python38:
-        imageName: 'ubuntu-19.04'
+        imageName: 'ubuntu-20.04'
         python.version: '3.8'
         pythonpypi: 'cp38-cp38'
       ubuntu - python37:
-        imageName: 'ubuntu-19.04'
+        imageName: 'ubuntu-20.04'
         python.version: '3.7'
         pythonpypi: 'cp37-cp37m'
       ubuntu - python36:
-        imageName: 'ubuntu-19.04'
+        imageName: 'ubuntu-20.04'
         python.version: '3.6'
         pythonpypi: 'cp36-cp36m'
   pool:
