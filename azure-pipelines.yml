@@ -13,16 +13,16 @@ jobs:
   pool:
     vmImage: 'ubuntu-20.04'
     maxParallel: 2
-    strategy:
-      matrix:
-        Python39:
-          python.version: '3.9'
-        Python38:
-          python.version: '3.8'
-        Python37:
-          python.version: '3.7'
-        Python36:
-          python.version: '3.6'
+  strategy:
+    matrix:
+      Python39:
+        python.version: '3.9'
+      Python38:
+        python.version: '3.8'
+      Python37:
+        python.version: '3.7'
+      Python36:
+        python.version: '3.6'
   steps:
   - script: python --version
     displayName: 'Check Python'
