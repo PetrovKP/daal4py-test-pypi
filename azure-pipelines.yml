@@ -27,7 +27,7 @@ jobs:
       ubuntu - python36:
         imageName: 'ubuntu-latest'
         python.version: '3.6'
-      mac - python9:
+      mac - python39:
         imageName: 'macos-latest'
         python.version: '3.9'
       mac - python38:
@@ -39,11 +39,20 @@ jobs:
       mac - python36:
         imageName: 'macos-latest'
         python.version: '3.6'
-      windows - python9:
+      windows - python39:
         imageName: 'windows-latest'
         python.version: '3.9'
-
+      windows - python38:
+        imageName: 'windows-latest'
+        python.version: '3.8'
+      windows - python37:
+        imageName: 'windows-latest'
+        python.version: '3.7'
+      windows - python36:
+        imageName: 'windows-latest'
+        python.version: '3.6'
   steps:
+  - task: UsePythonVersion@0
   - script: python --version
     displayName: 'Check Python'
   - script:
