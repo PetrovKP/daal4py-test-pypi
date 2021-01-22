@@ -47,6 +47,8 @@ jobs:
       echo "git clone"
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
+      echo "clinfo"
+      clinfo
       python -m unittest discover -v -s tests -p test*.py
       pytest --pyargs daal4py/sklearn/
       python examples/run_examples.py
