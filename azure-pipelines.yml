@@ -12,42 +12,22 @@ jobs:
 - job: daalp4yPyP
   strategy:
     matrix:
-      ubuntu - python39:
-        imageName: 'ubuntu-latest'
-        python.version: '3.9'
-      ubuntu - python38:
-        imageName: 'ubuntu-latest'
-        python.version: '3.8'
-      ubuntu - python37:
-        imageName: 'ubuntu-latest'
-        python.version: '3.7'
-      ubuntu - python36:
-        imageName: 'ubuntu-latest'
-        python.version: '3.6'
       mac - python39:
         imageName: 'macos-latest'
         python.version: '3.9'
+        pythonpypi: 'cp39-cp39'
       mac - python38:
         imageName: 'macos-latest'
         python.version: '3.8'
+        pythonpypi: 'cp38-cp38'
       mac - python37:
         imageName: 'macos-latest'
         python.version: '3.7'
+        pythonpypi: 'cp37-cp37m'
       mac - python36:
         imageName: 'macos-latest'
         python.version: '3.6'
-      windows - python39:
-        imageName: 'windows-latest'
-        python.version: '3.9'
-      windows - python38:
-        imageName: 'windows-latest'
-        python.version: '3.8'
-      windows - python37:
-        imageName: 'windows-latest'
-        python.version: '3.7'
-      windows - python36:
-        imageName: 'windows-latest'
-        python.version: '3.6'
+        pythonpypi: 'cp36-cp36m'
   pool:
     vmImage: $(imageName)
   steps:
@@ -57,11 +37,11 @@ jobs:
       versionSpec: '$(python.version)'
   - script: python --version
     displayName: 'Check Python'
-  - script:
-      pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
-      pip install pytest pandas scikit-learn
+  - script: |
+      pip install daal4py-2021.1-$(pythonpypi)-macosx_10_15_x86_64.whl
+      pip install pytest pandas scikit-learn 
     displayName: 'Install daal4py'
-  - script:
+  - script: |
       python -c "import daal4py"
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
