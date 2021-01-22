@@ -29,7 +29,9 @@ jobs:
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
+      echo "python -c "import daal4py"
       python -c "import daal4py"
+      echo "git clone"
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       python -m unittest discover -v -s tests -p test*.py
