@@ -15,17 +15,32 @@ jobs:
     maxParallel: 2
   strategy:
     matrix:
-      ubuntu - python9:
-        imageName: 'ubuntu-16.04'
+      ubuntu - python39:
+        imageName: 'ubuntu-latest'
         python.version: '3.9'
-      ubuntu - python8:
-        imageName: 'ubuntu-16.04'
+      ubuntu - python38:
+        imageName: 'ubuntu-latest'
         python.version: '3.8'
+      ubuntu - python37:
+        imageName: 'ubuntu-latest'
+        python.version: '3.7'
+      ubuntu - python36:
+        imageName: 'ubuntu-latest'
+        python.version: '3.6'
       mac - python9:
-        imageName: 'macos-10.14'
+        imageName: 'macos-latest'
         python.version: '3.9'
+      mac - python38:
+        imageName: 'macos-latest'
+        python.version: '3.8'
+      mac - python37:
+        imageName: 'macos-latest'
+        python.version: '3.7'
+      mac - python36:
+        imageName: 'macos-latest'
+        python.version: '3.6'
       windows - python9:
-        imageName: 'vs2017-win2016'
+        imageName: 'windows-latest'
         python.version: '3.9'
 
   steps:
