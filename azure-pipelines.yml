@@ -12,6 +12,10 @@ jobs:
 - job: daalp4yPyP
   strategy:
     matrix:
+      ubuntu - python39:
+        imageName: 'ubuntu-latest'
+        python.version: '3.9'
+        pythonpypi: '39'
       ubuntu - python38:
         imageName: 'ubuntu-latest'
         python.version: '3.8'
