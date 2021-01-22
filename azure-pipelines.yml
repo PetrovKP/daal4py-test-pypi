@@ -15,6 +15,7 @@ jobs:
       ubuntu - python38:
         imageName: 'ubuntu-latest'
         python.version: '3.8'
+        pythonpypi: '38'
   pool:
     vmImage: $(imageName)
   steps:
@@ -25,7 +26,7 @@ jobs:
   - script: python --version
     displayName: 'Check Python'
   - script: |
-      pip install daal4py-2021.1-cp38-cp38-manylinux1_x86_64.whl
+      pip install daal4py-2021.1-cp$(pythonpypi)-cp$(pythonpypi)-manylinux1_x86_64.whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
