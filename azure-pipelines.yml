@@ -42,6 +42,12 @@ jobs:
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
+      pip install pyyaml
+      cd daal4py
+      git checkout PetrovKP-patch-5
+      source .circleci/run_and_compare.sh $(Pipeline.Workspace)/daal4py $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
+    displayName: 'Scilit-learn testing'
+  - script: |
       echo "python -c import daal4py"
       python -c "import daal4py"
       echo "git clone"
@@ -53,9 +59,4 @@ jobs:
       # python examples/run_examples.py
       # python -m daal4py examples/sycl/sklearn_sycl.py
     displayName: 'Testing daal4py'
-  - script: |
-      pip install pyyaml
-      cd daal4py
-      git checkout PetrovKP-patch-5
-      source $(Pipeline.Workspace)/daal4py/.circleci/run_and_compare.sh $(Pipeline.Workspace)/daal4py $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
-    displayName: 'Scilit-learn testing'
+
