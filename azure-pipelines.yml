@@ -46,7 +46,7 @@ jobs:
     displayName: 'Clone of daal4py'
   - script: |
       pip install pyyaml
-      source .circleci/run_and_compare.sh $(pwd) patched_pypi_pytest_logs.tar.bz2
+      source daal4py/.circleci/run_and_compare.sh $(pwd)/daal4py patched_pypi_pytest_logs.tar.bz2
     displayName: 'Scilit-learn testing'
   - script: |
       echo "python -c import daal4py"
