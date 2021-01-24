@@ -42,7 +42,6 @@ jobs:
   - script: |
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
-      git checkout PetrovKP-patch-5
     displayName: 'Clone of daal4py'
   - script: |
       echo "python -c import daal4py"
