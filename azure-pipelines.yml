@@ -15,19 +15,19 @@ jobs:
       ubuntu - python39:
         imageName: 'ubuntu-20.04'
         python.version: '3.9'
-        pythonpypi: 'cp39-cp39'
+        pythonpypi: 'cp39-cp39-manylinux1_x86_64'
       ubuntu - python38:
         imageName: 'ubuntu-20.04'
         python.version: '3.8'
-        pythonpypi: 'cp38-cp38'
+        pythonpypi: 'cp38-cp38-manylinux1_x86_64'
       ubuntu - python37:
         imageName: 'ubuntu-20.04'
         python.version: '3.7'
-        pythonpypi: 'cp37-cp37m'
+        pythonpypi: 'cp37-cp37m-manylinux1_x86_64'
       ubuntu - python36:
         imageName: 'ubuntu-20.04'
         python.version: '3.6'
-        pythonpypi: 'cp36-cp36m'
+        pythonpypi: 'cp36-cp36m-manylinux1_x86_64'
   pool:
     vmImage: $(imageName)
   steps:
@@ -38,7 +38,7 @@ jobs:
   - script: python --version
     displayName: 'Check Python'
   - script: |
-      pip install daal4py-2021.1-$(pythonpypi)-manylinux1_x86_64.whl
+      pip install daal4py-2021.1-$(pythonpypi).whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
@@ -49,17 +49,13 @@ jobs:
       cd daal4py
       python -m unittest discover -v -s tests -p test*.py
       pytest --pyargs daal4py/sklearn/
+      # Failed with sycl CPU
       # python examples/run_examples.py
       # python -m daal4py examples/sycl/sklearn_sycl.py
     displayName: 'Testing daal4py'
   - script: |
       pip install pyyaml
-      git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       git checkout PetrovKP-patch-5
-      cd .circleci
-      export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml)
-      echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
-      cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
-      
+      source $(Pipeline.Workspace)/daal4py/.circleci/run_and_compare.sh $(Pipeline.Workspace)/daal4py $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
     displayName: 'Scilit-learn testing'
