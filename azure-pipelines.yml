@@ -45,15 +45,15 @@ jobs:
       git checkout PetrovKP-patch-5
     displayName: 'Clone of daal4py'
   - script: |
-      . /usr/share/miniconda/etc/profile.d/conda.sh
-      conda update -q -y conda
-      conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
-      conda activate CB
-      pip install daal4py-2021.1-$(pythonpypi).whl
-      pip install pandas scipy
+      echo "python -c import daal4py"
+      python -c "import daal4py"
       cd daal4py
-      mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
-    displayName: 'Testing of distributed daal4py'
+      python -m unittest discover -v -s tests -p test*.py
+      pytest --pyargs daal4py/sklearn/
+      # Failed with sycl CPU
+      # python examples/run_examples.py
+      # python -m daal4py examples/sycl/sklearn_sycl.py
+    displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
       export DAAL4PY_ROOT=$(realpath daal4py)
@@ -65,14 +65,13 @@ jobs:
       echo "Summary of patched run: " $D4P
       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
     displayName: 'Scilit-learn testing'
-  - script: |
-      echo "python -c import daal4py"
-      python -c "import daal4py"
+- script: |
+      . /usr/share/miniconda/etc/profile.d/conda.sh
+      conda update -q -y conda
+      conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
+      conda activate CB
+      pip install daal4py-2021.1-$(pythonpypi).whl
+      pip install pandas scipy
       cd daal4py
-      python -m unittest discover -v -s tests -p test*.py
-      pytest --pyargs daal4py/sklearn/
-      # Failed with sycl CPU
-      # python examples/run_examples.py
-      # python -m daal4py examples/sycl/sklearn_sycl.py
-    displayName: 'Testing of daal4py'
-
+      mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
+    displayName: 'Testing of distributed daal4py'
