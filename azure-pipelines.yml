@@ -46,7 +46,7 @@ jobs:
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       git checkout PetrovKP-patch-5
-      source .circleci/run_and_compare.sh `pwd` $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
+      source .circleci/run_and_compare.sh $(pwd) $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
     displayName: 'Scilit-learn testing'
   - script: |
       echo "python -c import daal4py"
