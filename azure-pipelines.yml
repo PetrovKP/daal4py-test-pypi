@@ -35,24 +35,22 @@ jobs:
     displayName: 'Use Python $(python.version)'
     inputs:
       versionSpec: '$(python.version)'
-  - script: python --version
-    displayName: 'Check Python'
   - script: |
       pip install daal4py-2021.1-$(pythonpypi).whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
-      pip install pyyaml
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       git checkout PetrovKP-patch-5
-      source .circleci/run_and_compare.sh $(pwd) $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
+    displayName: 'Clone of daal4py'
+  - script: |
+      pip install pyyaml
+      source .circleci/run_and_compare.sh $(pwd) patched_pypi_pytest_logs.tar.bz2
     displayName: 'Scilit-learn testing'
   - script: |
       echo "python -c import daal4py"
       python -c "import daal4py"
-      echo "git clone"
-      git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       python -m unittest discover -v -s tests -p test*.py
       pytest --pyargs daal4py/sklearn/
