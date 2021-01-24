@@ -65,7 +65,7 @@ jobs:
       echo "Summary of patched run: " $D4P
       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
     displayName: 'Scilit-learn testing'
-- script: |
+  - script: |
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda update -q -y conda
       conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
