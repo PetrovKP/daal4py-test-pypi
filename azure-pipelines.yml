@@ -43,6 +43,7 @@ jobs:
     displayName: 'Install daal4py'
   - script: |
       pip install pyyaml
+      git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       git checkout PetrovKP-patch-5
       source .circleci/run_and_compare.sh $(Pipeline.Workspace)/daal4py $(Build.ArtifactStagingDirectory)/patched_pypi_pytest_logs.tar.bz2
