@@ -46,7 +46,13 @@ jobs:
     displayName: 'Clone of daal4py'
   - script: |
       pip install pyyaml
-      source daal4py/.circleci/run_and_compare.sh $(pwd)/daal4py patched_pypi_pytest_logs.tar.bz2
+      cd daal4py/.circleci
+      export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
+      echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
+      cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
+      export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+      echo "Summary of patched run: " $D4P
+      python ~/daal4py/.circleci/compare_runs.py
     displayName: 'Scilit-learn testing'
   - script: |
       echo "python -c import daal4py"
