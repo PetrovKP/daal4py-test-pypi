@@ -45,7 +45,7 @@ jobs:
       git checkout PetrovKP-patch-5
     displayName: 'Clone of daal4py'
   - script: |
-      pip install mpi4py
+      apt install mpich
       cd daal4py
       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
     displayName: 'Testing of distributed daal4py'
