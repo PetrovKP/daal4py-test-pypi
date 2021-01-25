@@ -18,16 +18,12 @@ jobs:
     vmImage: $(imageName)
   steps:
   - script: |
+      . /usr/share/miniconda/etc/profile.d/conda.sh
       conda update -q -y conda
-      conda create -q -y -n CB -c intel python=3.7 daal4py scikit-learn
-      pip install pytest pandas
-    displayName: 'Install daal4py'
+      conda create -q -y -n CB -c intel python=3.7 dpctl
+    displayName: 'Install dpctl'
   - script: |
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda activate CB
-      python -c "import daal4py"
-      git clone https://github.com/IntelPython/daal4py.git
-      cd daal4py
-      python examples/run_examples.py
-      python -m daal4py examples/sycl/sklearn_sycl.py
-    displayName: 'Testing daal4py'
+      python example.py
+    displayName: 'Testing dpctl'
