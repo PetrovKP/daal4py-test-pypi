@@ -12,18 +12,18 @@ jobs:
 - job: daalp4yPyP
   strategy:
     matrix:
-       mac - python39:
-         imageName: 'macos-latest'
-         python.version: '3.9'
-         pythonpypi: 'cp39-cp39-macosx_10_15_x86_64'
-       mac - python38:
-         imageName: 'macos-latest'
-         python.version: '3.8'
-         pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
-       mac - python37:
-         imageName: 'macos-latest'
-         python.version: '3.7'
-         pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
+      mac - python39:
+        imageName: 'macos-latest'
+        python.version: '3.9'
+        pythonpypi: 'cp39-cp39-macosx_10_15_x86_64'
+      mac - python38:
+        imageName: 'macos-latest'
+        python.version: '3.8'
+        pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
+      mac - python37:
+        imageName: 'macos-latest'
+        python.version: '3.7'
+        pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
       mac - python36:
         imageName: 'macos-latest'
         python.version: '3.6'
