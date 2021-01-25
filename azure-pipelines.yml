@@ -82,7 +82,7 @@ jobs:
       sudo chown -R $USER $CONDA
       conda update -q -y conda
       conda create -q -y -n CB -c conda-forge python=$(python.version) mpich
-      conda activate CB
+      source activate CB
       pip install daal4py-2021.1-$(pythonpypi).whl
       pip install pandas scipy
       cd daal4py
