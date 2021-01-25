@@ -45,9 +45,10 @@ jobs:
       git checkout PetrovKP-patch-5
     displayName: 'Clone of daal4py'
   - script: |
-      echo "python -c import daal4py"
-      python -c "import daal4py"
+      echo "LD_DEBUG=libs python -c import daal4py"
+      LD_DEBUG=libs python -c "import daal4py"
       cd daal4py
+      echo "python -m unittest discover -v -s tests -p test*.py"
       python -m unittest discover -v -s tests -p test*.py
       pytest --pyargs daal4py/sklearn/
       # Failed with sycl CPU
