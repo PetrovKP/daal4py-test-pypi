@@ -12,18 +12,18 @@ jobs:
 - job: daalp4yPyP
   strategy:
     matrix:
-      mac - python39:
-        imageName: 'macos-latest'
-        python.version: '3.9'
-        pythonpypi: 'cp39-cp39-macosx_10_15_x86_64'
-      mac - python38:
-        imageName: 'macos-latest'
-        python.version: '3.8'
-        pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
-      mac - python37:
-        imageName: 'macos-latest'
-        python.version: '3.7'
-        pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
+#       mac - python39:
+#         imageName: 'macos-latest'
+#         python.version: '3.9'
+#         pythonpypi: 'cp39-cp39-macosx_10_15_x86_64'
+#       mac - python38:
+#         imageName: 'macos-latest'
+#         python.version: '3.8'
+#         pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
+#       mac - python37:
+#         imageName: 'macos-latest'
+#         python.version: '3.7'
+#         pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
       mac - python36:
         imageName: 'macos-latest'
         python.version: '3.6'
@@ -44,20 +44,20 @@ jobs:
       cd daal4py
       git checkout PetrovKP-patch-5
     displayName: 'Clone of daal4py'
-  - script: |
-      echo "LD_DEBUG=libs python -c import daal4py"
-      LD_DEBUG=libs python -c "import daal4py"
-      cd daal4py
-      echo "python -m unittest discover -v -s tests -p test*.py"
-      python -m unittest discover -v -s tests -p test*.py
-      pytest --pyargs daal4py/sklearn/
-      # Failed with sycl CPU
-      # python examples/run_examples.py
-      # python -m daal4py examples/sycl/sklearn_sycl.py
-    displayName: 'Testing of daal4py'
+#   - script: |
+#       echo "LD_DEBUG=libs python -c import daal4py"
+#       LD_DEBUG=libs python -c "import daal4py"
+#       cd daal4py
+#       echo "python -m unittest discover -v -s tests -p test*.py"
+#       python -m unittest discover -v -s tests -p test*.py
+#       pytest --pyargs daal4py/sklearn/
+#       # Failed with sycl CPU
+#       # python examples/run_examples.py
+#       # python -m daal4py examples/sycl/sklearn_sycl.py
+#     displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
-      export DAAL4PY_ROOT=$(realpath daal4py)
+      export DAAL4PY_ROOT=$(pwd)/daal4py
       cd daal4py/.circleci
       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
@@ -70,6 +70,16 @@ jobs:
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda update -q -y conda
       conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
+    condition: eq( variables['Agent.OS'], 'Linux' )
+    displayName: 'Install MPI'
+  - script: |
+      . /usr/share/miniconda/etc/profile.d/conda.sh
+      conda update -q -y conda
+      conda create -q -y -n CB -c conda-forge python=$(python.version) mpich
+    condition: eq( variables['Agent.OS'], 'Darwin' )
+    displayName: 'Install MPI'
+  - script: |
+      . /usr/share/miniconda/etc/profile.d/conda.sh
       conda activate CB
       pip install daal4py-2021.1-$(pythonpypi).whl
       pip install pandas scipy
