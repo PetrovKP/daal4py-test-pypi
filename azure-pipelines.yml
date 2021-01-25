@@ -78,8 +78,6 @@ jobs:
     condition: eq( variables['Agent.OS'], 'Linux' )
     displayName: 'Testing of daal4py with MPI on LINUX OS'
   - script: |
-      echo "##vso[task.prependpath]$CONDA/bin"
-      sudo chown -R $USER $CONDA
       conda update -q -y conda
       conda create -q -y -n CB -c conda-forge python=$(python.version) mpich
       source activate CB
