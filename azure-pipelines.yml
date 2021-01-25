@@ -28,6 +28,18 @@ jobs:
         imageName: 'ubuntu-20.04'
         python.version: '3.6'
         pythonpypi: 'cp36-cp36m-manylinux1_x86_64'
+      mac - python38:
+        imageName: 'macos-latest'
+        python.version: '3.8'
+        pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
+      mac - python37:
+        imageName: 'macos-latest'
+        python.version: '3.7'
+        pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
+      mac - python36:
+        imageName: 'macos-latest'
+        python.version: '3.6'
+        pythonpypi: 'cp36-cp36m-macosx_10_15_x86_64'
   pool:
     vmImage: $(imageName)
   steps:
@@ -47,6 +59,7 @@ jobs:
       echo "python -c import daal4py"
       python -c "import daal4py"
       cd daal4py
+      echo "python -m unittest discover -v -s tests -p test*.py"
       python -m unittest discover -v -s tests -p test*.py
       pytest --pyargs daal4py/sklearn/
       # Failed with sycl CPU
@@ -55,7 +68,7 @@ jobs:
     displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
-      export DAAL4PY_ROOT=$(realpath daal4py)
+      export DAAL4PY_ROOT=$(pwd)/daal4py
       cd daal4py/.circleci
       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
@@ -63,7 +76,20 @@ jobs:
       export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
       echo "Summary of patched run: " $D4P
       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
-    displayName: 'Scilit-learn testing'
+    condition: eq( variables['Agent.OS'], 'Linux' )
+    displayName: 'Scilit-learn testing Linux'
+  - script: |
+      pip install pyyaml
+      export DAAL4PY_ROOT=$(pwd)/daal4py
+      cd daal4py/.circleci
+      export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --absolute --reduced)
+      echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
+      cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
+      export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+      echo "Summary of patched run: " $D4P
+      python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
+    condition: eq( variables['Agent.OS'], 'Darwin')
+    displayName: 'Scilit-learn testing Mac OS'
   - script: |
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda update -q -y conda
@@ -73,4 +99,5 @@ jobs:
       pip install pandas scipy
       cd daal4py
       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
-    displayName: 'Testing of daal4py with MPI'
+    condition: eq( variables['Agent.OS'], 'Linux' )
+    displayName: 'Testing of daal4py with MPI on LINUX OS'
