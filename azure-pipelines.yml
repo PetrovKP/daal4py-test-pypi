@@ -44,28 +44,28 @@ jobs:
       cd daal4py
       git checkout PetrovKP-patch-5
     displayName: 'Clone of daal4py'
-#   - script: |
-#       echo "LD_DEBUG=libs python -c import daal4py"
-#       LD_DEBUG=libs python -c "import daal4py"
-#       cd daal4py
-#       echo "python -m unittest discover -v -s tests -p test*.py"
-#       python -m unittest discover -v -s tests -p test*.py
-#       pytest --pyargs daal4py/sklearn/
-#       # Failed with sycl CPU
-#       # python examples/run_examples.py
-#       # python -m daal4py examples/sycl/sklearn_sycl.py
-#     displayName: 'Testing of daal4py'
-#   - script: |
-#       pip install pyyaml
-#       export DAAL4PY_ROOT=$(pwd)/daal4py
-#       cd daal4py/.circleci
-#       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --absolute --reduced)
-#       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
-#       cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
-#       export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
-#       echo "Summary of patched run: " $D4P
-#       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
-#     displayName: 'Scilit-learn testing'
+  - script: |
+      echo "LD_DEBUG=libs python -c import daal4py"
+      LD_DEBUG=libs python -c "import daal4py"
+      cd daal4py
+      echo "python -m unittest discover -v -s tests -p test*.py"
+      python -m unittest discover -v -s tests -p test*.py
+      pytest --pyargs daal4py/sklearn/
+      # Failed with sycl CPU
+      # python examples/run_examples.py
+      # python -m daal4py examples/sycl/sklearn_sycl.py
+    displayName: 'Testing of daal4py'
+  - script: |
+      pip install pyyaml
+      export DAAL4PY_ROOT=$(pwd)/daal4py
+      cd daal4py/.circleci
+      export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --absolute --reduced)
+      echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
+      cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
+      export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+      echo "Summary of patched run: " $D4P
+      python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
+    displayName: 'Scilit-learn testing'
   - script: |
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda update -q -y conda
@@ -77,13 +77,3 @@ jobs:
       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
     condition: eq( variables['Agent.OS'], 'Linux' )
     displayName: 'Testing of daal4py with MPI on LINUX OS'
-  - script: |
-      conda update -q -y conda
-      conda create -q -y -n CB -c conda-forge python=$(python.version) mpich
-      source activate CB
-      pip install daal4py-2021.1-$(pythonpypi).whl
-      pip install pandas scipy
-      cd daal4py
-      mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
-    condition: eq( variables['Agent.OS'], 'Darwin' )
-    displayName: 'Testing of daal4py with MPI on MAC OS'
