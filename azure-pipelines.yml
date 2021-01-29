@@ -52,6 +52,10 @@ jobs:
         imageName: 'windows-latest'
         python.version: '3.8'
         pythonpypi: 'cp38-cp38-win_amd64'
+      windows - python39:
+        imageName: 'windows-latest'
+        python.version: '3.9'
+        pythonpypi: 'cp39-cp39-win_amd64'
   pool:
     vmImage: $(imageName)
   steps:
@@ -113,6 +117,10 @@ jobs:
 - job: daalp4yPyPiWithCondaEnv
   strategy:
     matrix:
+      windows - python36:
+        imageName: 'windows-latest'
+        python.version: '3.6'
+        pythonpypi: 'cp36-cp36m-win_amd64'
       windows - python37:
         imageName: 'windows-latest'
         python.version: '3.7'
@@ -121,6 +129,10 @@ jobs:
         imageName: 'windows-latest'
         python.version: '3.8'
         pythonpypi: 'cp38-cp38-win_amd64'
+      windows - python39:
+        imageName: 'windows-latest'
+        python.version: '3.9'
+        pythonpypi: 'cp39-cp39-win_amd64'
   pool:
     vmImage: $(imageName)
   steps:
