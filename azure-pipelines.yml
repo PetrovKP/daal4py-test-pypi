@@ -63,6 +63,8 @@ jobs:
   - script: |
       echo "python -c import daal4py"
       python -c "import daal4py"
+      echo "python -m unittest discover -v -s tests -p test*.py"
+      python -m unittest discover -v -s daal4py/tests -p test*.py
     displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
@@ -95,9 +97,9 @@ jobs:
       set DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
       cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
-      export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+      set D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
       echo "Summary of patched run: " $D4P
-      python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
+      python %DAAL4PY_ROOT%/.circleci/compare_runs.py
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: 'Scilit-learn testing Windows_NT' 
   - script: |
