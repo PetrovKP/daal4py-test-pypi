@@ -93,7 +93,7 @@ jobs:
   - script: |
       pip install pyyaml
       cd daal4py/.circleci
-      python deselect_tests.py ../deselected_tests.yaml --reduced > temp.txt
+      python deselect_tests.py ../deselected_tests.yaml --absolute --reduced > temp.txt
       set /p DESELECTED_TESTS=<temp.txt
       echo "-m daal4py -m pytest %DESELECTED_TESTS% -q -ra --disable-warnings --pyargs sklearn"
       cd ~
