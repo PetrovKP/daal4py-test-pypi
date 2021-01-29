@@ -53,6 +53,7 @@ jobs:
       versionSpec: '$(python.version)'
   - script: |
       pip install daal4py-2021.1-$(pythonpypi).whl
+      pip install impi-rt
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
