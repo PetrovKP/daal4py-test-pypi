@@ -124,6 +124,9 @@ jobs:
     displayName: 'Use Python $(python.version)'
     inputs:
       versionSpec: '$(python.version)'
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: Add conda to PATH
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
   - script: |
       conda update -y -q conda
       conda create -q -y -n CB python=$(python.version)
@@ -136,7 +139,6 @@ jobs:
       cd daal4py
     displayName: 'Clone of daal4py'
   - script: |
-      . /usr/share/miniconda/etc/profile.d/conda.sh
       conda activate CB
       echo "python -c import daal4py"
       python -c "import daal4py"
