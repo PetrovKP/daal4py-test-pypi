@@ -130,7 +130,7 @@ jobs:
   - script: |
       conda update -y -q conda
       conda create -q -y -n CB python=$(python.version)
-      source activate CB
+      call activate CB
       pip install daal4py-2021.1-$(pythonpypi).whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
@@ -139,7 +139,7 @@ jobs:
       cd daal4py
     displayName: 'Clone of daal4py'
   - script: |
-      conda activate CB
+      call activate CB
       echo "python -c import daal4py"
       python -c "import daal4py"
       echo "python -m unittest discover -v -s tests -p test*.py"
