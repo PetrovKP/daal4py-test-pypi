@@ -96,7 +96,8 @@ jobs:
       python deselect_tests.py ../deselected_tests.yaml --reduced > temp.txt
       set /p DESELECTED_TESTS=<temp.txt
       echo "-m daal4py -m pytest %DESELECTED_TESTS% -q -ra --disable-warnings --pyargs sklearn"
-      cd && ((python -m daal4py -m pytest %DESELECTED_TESTS% -ra --disable-warnings --pyargs sklearn || true)
+      cd ~
+      python -m daal4py -m pytest %DESELECTED_TESTS% -ra --disable-warnings --pyargs sklearn
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: 'Scilit-learn testing Windows_NT' 
   - script: |
