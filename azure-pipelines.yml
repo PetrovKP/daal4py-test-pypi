@@ -9,37 +9,53 @@ pr:
     - main
 
 jobs:
-- job: daalp4yPyP
+- job: daalp4yPyPi
   strategy:
     matrix:
-      ubuntu - python39:
-        imageName: 'ubuntu-20.04'
+#       ubuntu - python39:
+#         imageName: 'ubuntu-20.04'
+#         python.version: '3.9'
+#         pythonpypi: 'cp39-cp39-manylinux1_x86_64'
+#       ubuntu - python38:
+#         imageName: 'ubuntu-20.04'
+#         python.version: '3.8'
+#         pythonpypi: 'cp38-cp38-manylinux1_x86_64'
+#       ubuntu - python37:
+#         imageName: 'ubuntu-20.04'
+#         python.version: '3.7'
+#         pythonpypi: 'cp37-cp37m-manylinux1_x86_64'
+#       ubuntu - python36:
+#         imageName: 'ubuntu-20.04'
+#         python.version: '3.6'
+#         pythonpypi: 'cp36-cp36m-manylinux1_x86_64'
+#       mac - python38:
+#         imageName: 'macos-latest'
+#         python.version: '3.8'
+#         pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
+#       mac - python37:
+#         imageName: 'macos-latest'
+#         python.version: '3.7'
+#         pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
+#       mac - python36:
+#         imageName: 'macos-latest'
+#         python.version: '3.6'
+#         pythonpypi: 'cp36-cp36m-macosx_10_15_x86_64'
+      windows - python36:
+        imageName: 'windows-latest'
+        python.version: '3.6'
+        pythonpypi: 'cp36-cp36m-win_amd64'
+      windows - python37:
+        imageName: 'windows-latest'
+        python.version: '3.7'
+        pythonpypi: 'cp37-cp37m-win_amd64'
+      windows - python38:
+        imageName: 'windows-latest'
+        python.version: '3.8'
+        pythonpypi: 'cp38-cp38-win_amd64'
+      windows - python39:
+        imageName: 'windows-latest'
         python.version: '3.9'
-        pythonpypi: 'cp39-cp39-manylinux1_x86_64'
-      ubuntu - python38:
-        imageName: 'ubuntu-20.04'
-        python.version: '3.8'
-        pythonpypi: 'cp38-cp38-manylinux1_x86_64'
-      ubuntu - python37:
-        imageName: 'ubuntu-20.04'
-        python.version: '3.7'
-        pythonpypi: 'cp37-cp37m-manylinux1_x86_64'
-      ubuntu - python36:
-        imageName: 'ubuntu-20.04'
-        python.version: '3.6'
-        pythonpypi: 'cp36-cp36m-manylinux1_x86_64'
-      mac - python38:
-        imageName: 'macos-latest'
-        python.version: '3.8'
-        pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
-      mac - python37:
-        imageName: 'macos-latest'
-        python.version: '3.7'
-        pythonpypi: 'cp37-cp37m-macosx_10_15_x86_64'
-      mac - python36:
-        imageName: 'macos-latest'
-        python.version: '3.6'
-        pythonpypi: 'cp36-cp36m-macosx_10_15_x86_64'
+        pythonpypi: 'cp39-cp39-win_amd64'
   pool:
     vmImage: $(imageName)
   steps:
@@ -58,13 +74,9 @@ jobs:
   - script: |
       echo "python -c import daal4py"
       python -c "import daal4py"
-      cd daal4py
       echo "python -m unittest discover -v -s tests -p test*.py"
-      python -m unittest discover -v -s tests -p test*.py
-      pytest --pyargs daal4py/sklearn/
-      # Failed with sycl CPU
-      # python examples/run_examples.py
-      # python -m daal4py examples/sycl/sklearn_sycl.py
+      python -m unittest discover -v -s daal4py/tests -p test*.py
+      pytest --pyargs daal4py/daal4py/sklearn/
     displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
@@ -101,3 +113,52 @@ jobs:
       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
     condition: eq( variables['Agent.OS'], 'Linux' )
     displayName: 'Testing of daal4py with MPI on LINUX OS'
+ 
+- job: daalp4yPyPiWithCondaEnv
+  strategy:
+    matrix:
+      windows - python36:
+        imageName: 'windows-latest'
+        python.version: '3.6'
+        pythonpypi: 'cp36-cp36m-win_amd64'
+      windows - python37:
+        imageName: 'windows-latest'
+        python.version: '3.7'
+        pythonpypi: 'cp37-cp37m-win_amd64'
+      windows - python38:
+        imageName: 'windows-latest'
+        python.version: '3.8'
+        pythonpypi: 'cp38-cp38-win_amd64'
+      windows - python39:
+        imageName: 'windows-latest'
+        python.version: '3.9'
+        pythonpypi: 'cp39-cp39-win_amd64'
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - task: UsePythonVersion@0
+    displayName: 'Use Python $(python.version)'
+    inputs:
+      versionSpec: '$(python.version)'
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: Add conda to PATH
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  - script: |
+      conda update -y -q conda
+      conda create -q -y -n CB python=$(python.version)
+      call activate CB
+      pip install daal4py-2021.1-$(pythonpypi).whl
+      pip install pytest pandas scikit-learn
+    displayName: 'Install daal4py'
+  - script: |
+      git clone https://github.com/IntelPython/daal4py.git
+      cd daal4py
+    displayName: 'Clone of daal4py'
+  - script: |
+      call activate CB
+      echo "python -c import daal4py"
+      python -c "import daal4py"
+      echo "python -m unittest discover -v -s tests -p test*.py"
+      python -m unittest discover -v -s daal4py/tests -p test*.py
+      pytest --pyargs daal4py/daal4py/sklearn/
+    displayName: 'Testing of daal4py'
