@@ -64,7 +64,7 @@ jobs:
     inputs:
       versionSpec: '$(python.version)'
   - script: |
-      pip install daal4py-2021.1-$(pythonpypi).whl
+      pip install daal4py-2021.1-1-$(pythonpypi).whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
@@ -151,7 +151,7 @@ jobs:
       conda update -y -q conda
       conda create -q -y -n CB python=$(python.version)
       call activate CB
-      pip install daal4py-2021.1-$(pythonpypi).whl
+      pip install daal4py-2021.1-1-$(pythonpypi).whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
