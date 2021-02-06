@@ -9,7 +9,7 @@ pr:
     - main
 
 jobs:
-- job: daalp4yPyP
+- job: daalp4yConda
   strategy:
     matrix:
       ubuntu:
@@ -25,9 +25,32 @@ jobs:
   - script: |
       . /usr/share/miniconda/etc/profile.d/conda.sh
       conda activate CB
+      export OCL_ICD_FILENAMES=libintelocl.so
       python -c "import daal4py"
       git clone https://github.com/IntelPython/daal4py.git
       cd daal4py
       python examples/run_examples.py
       python -m daal4py examples/sycl/sklearn_sycl.py
     displayName: 'Testing daal4py'
+- job: daalp4yPyPi
+  strategy:
+    matrix:
+      ubuntu:
+        imageName: 'ubuntu-20.04'
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - script: |
+      pip install daal4py scikit-learn libxml2
+      pip install pytest pandas
+    displayName: 'Install daal4py'
+  - script: |
+      export OCL_ICD_FILENAMES=libintelocl.so
+      python -c "import daal4py"
+      git clone https://github.com/IntelPython/daal4py.git
+      cd daal4py
+      python examples/run_examples.py
+      python -m daal4py examples/sycl/sklearn_sycl.py
+    displayName: 'Testing daal4py'
+
+
