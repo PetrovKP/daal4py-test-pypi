@@ -49,7 +49,7 @@ jobs:
   - script: |
       export OCL_ICD_FILENAMES=libintelocl.so
       python -c "import daal4py"
-      python daal4py/examples/run_examples.py
+      # python daal4py/examples/run_examples.py
       python -m daal4py daal4py/examples/sycl/sklearn_sycl.py
     displayName: 'Testing daal4py'
 
