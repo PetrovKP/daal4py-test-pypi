@@ -44,9 +44,11 @@ jobs:
       pip install pytest pandas
     displayName: 'Install daal4py'
   - script: |
+      git clone https://github.com/IntelPython/daal4py.git
+    displayName: 'Clone of daal4py'
+  - script: |
       export OCL_ICD_FILENAMES=libintelocl.so
       python -c "import daal4py"
-      git clone https://github.com/IntelPython/daal4py.git
       python daal4py/examples/run_examples.py
       python -m daal4py daal4py/examples/sycl/sklearn_sycl.py
     displayName: 'Testing daal4py'
