@@ -147,8 +147,8 @@ jobs:
       versionSpec: '$(python.version)'
   - script: |
       pip install virtualenv
-      python3 -m virtualenv venv
-      call venv/bin/activate
+      virtualenv venv
+      .\venv\bin\activate
       pip install daal4py
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
@@ -157,7 +157,7 @@ jobs:
       cd daal4py
     displayName: 'Clone of daal4py'
   - script: |
-      call venv/bin/activate
+      .\venv\bin\activate
       echo "python -c import daal4py"
       python -c "import daal4py"
       echo "python -m unittest discover -v -s tests -p test*.py"
