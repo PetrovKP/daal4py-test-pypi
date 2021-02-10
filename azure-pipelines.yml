@@ -148,7 +148,7 @@ jobs:
   - script: |
       pip install virtualenv
       python -m venv env
-      .\venv\Scripts\activate
+      .\env\Scripts\activate
       pip install daal4py
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
@@ -157,7 +157,7 @@ jobs:
       cd daal4py
     displayName: 'Clone of daal4py'
   - script: |
-      .\venv\Scripts\activate
+      .\env\Scripts\activate
       echo "python -c import daal4py"
       python -c "import daal4py"
       echo "python -m unittest discover -v -s tests -p test*.py"
