@@ -146,7 +146,7 @@ jobs:
     inputs:
       versionSpec: '$(python.version)'
   - script: |
-      python -m venv -n venv
+      python -m venv venv
       call venv/bin/activate
       pip install daal4py
       pip install pytest pandas scikit-learn
