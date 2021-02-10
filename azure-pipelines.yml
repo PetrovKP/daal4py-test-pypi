@@ -126,18 +126,6 @@ jobs:
         imageName: 'windows-latest'
         python.version: '3.8'
         pythonpypi: 'cp38-cp38-win_amd64'
-      ubuntu - python37:
-        imageName: 'ubuntu-20.04'
-        python.version: '3.7'
-        pythonpypi: 'cp37-cp37m-manylinux1_x86_64'
-      ubuntu - python36:
-        imageName: 'ubuntu-20.04'
-        python.version: '3.6'
-        pythonpypi: 'cp36-cp36m-manylinux1_x86_64'
-      mac - python38:
-        imageName: 'macos-latest'
-        python.version: '3.8'
-        pythonpypi: 'cp38-cp38-macosx_10_15_x86_64'
   pool:
     vmImage: $(imageName)
   steps:
@@ -148,7 +136,7 @@ jobs:
   - script: |
       pip install virtualenv
       python -m venv env
-      .\env\Scripts\activate
+      call .\env\Scripts\activate
       pip install daal4py
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
@@ -157,7 +145,7 @@ jobs:
       cd daal4py
     displayName: 'Clone of daal4py'
   - script: |
-      .\env\Scripts\activate
+      call .\env\Scripts\activate
       echo "python -c import daal4py"
       python -c "import daal4py"
       echo "python -m unittest discover -v -s tests -p test*.py"
