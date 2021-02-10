@@ -8,7 +8,7 @@ pr:
     include:
     - main
 
-# jobs:
+jobs:
 # - job: daalp4yPyPi
 #   strategy:
 #     matrix:
