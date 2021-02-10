@@ -146,6 +146,7 @@ jobs:
     inputs:
       versionSpec: '$(python.version)'
   - script: |
+      pip install virtualenv
       python -m venv venv
       call venv/bin/activate
       pip install daal4py
