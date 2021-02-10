@@ -147,7 +147,7 @@ jobs:
       versionSpec: '$(python.version)'
   - script: |
       pip install virtualenv
-      python -m venv venv
+      python -m virtualenv venv
       call venv/bin/activate
       pip install daal4py
       pip install pytest pandas scikit-learn
