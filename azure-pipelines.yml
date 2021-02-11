@@ -118,9 +118,9 @@ jobs:
 - job: daalp4yPyPiWithVEnv
   strategy:
     matrix:
-      windows - python36:
+      windows - python37:
         imageName: 'windows-latest'
-        python.version: '3.6'
+        python.version: '3.7'
         pythonpypi: 'cp37-cp37m-win_amd64'
       windows - python38:
         imageName: 'windows-latest'
