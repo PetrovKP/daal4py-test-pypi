@@ -78,6 +78,7 @@ jobs:
       echo "python -m unittest discover -v -s tests -p test*.py"
       python -m unittest discover -v -s daal4py/tests -p test*.py
       pytest --pyargs daal4py/daal4py/sklearn/
+      python daal4py/examples/run_examples.py
     displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
