@@ -9,9 +9,9 @@ pr:
     - main
 
 jobs:
-# - job: daalp4yPyPi
-#   strategy:
-#     matrix:
+  - job: daalp4yPyPi
+    strategy:
+      matrix:
 #       ubuntu - python39:
 #         imageName: 'ubuntu-20.04'
 #         python.version: '3.9'
@@ -44,76 +44,76 @@ jobs:
 #         imageName: 'windows-latest'
 #         python.version: '3.6'
 #         pythonpypi: 'cp36-cp36m-win_amd64'
-#       windows - python37:
-#         imageName: 'windows-latest'
-#         python.version: '3.7'
-#         pythonpypi: 'cp37-cp37m-win_amd64'
-#       windows - python38:
-#         imageName: 'windows-latest'
-#         python.version: '3.8'
-#         pythonpypi: 'cp38-cp38-win_amd64'
+        windows - python37:
+          imageName: 'windows-latest'
+          python.version: '3.7'
+          pythonpypi: 'cp37-cp37m-win_amd64'
+        windows - python38:
+          imageName: 'windows-latest'
+          python.version: '3.8'
+          pythonpypi: 'cp38-cp38-win_amd64'
 #       windows - python39:
 #         imageName: 'windows-latest'
 #         python.version: '3.9'
 #         pythonpypi: 'cp39-cp39-win_amd64'
-#   pool:
-#     vmImage: $(imageName)
-#   steps:
-#   - task: UsePythonVersion@0
-#     displayName: 'Use Python $(python.version)'
-#     inputs:
-#       versionSpec: '$(python.version)'
-#   - script: |
-#       pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
-#       pip install pytest pandas scikit-learn
-#       pip install numpy==1.19.5
-#     displayName: 'Install daal4py'
-#   - script: |
-#       git clone https://github.com/IntelPython/daal4py.git
-#       cd daal4py
-#     displayName: 'Clone of daal4py'
-#   - script: |
-#       echo "python -c import daal4py"
-#       python -c "import daal4py"
-#       echo "python -m unittest discover -v -s tests -p test*.py"
-#       python -m unittest discover -v -s daal4py/tests -p test*.py
-#       pytest --pyargs daal4py/daal4py/sklearn/
-#     displayName: 'Testing of daal4py'
-#   - script: |
-#       pip install pyyaml
-#       export DAAL4PY_ROOT=$(pwd)/daal4py
-#       cd daal4py/.circleci
-#       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
-#       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
-#       cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
-#       export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
-#       echo "Summary of patched run: " $D4P
-#       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
-#     condition: eq( variables['Agent.OS'], 'Linux' )
-#     displayName: 'Scilit-learn testing Linux'
-#   - script: |
-#       pip install pyyaml
-#       export DAAL4PY_ROOT=$(pwd)/daal4py
-#       cd daal4py/.circleci
-#       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --absolute --reduced)
-#       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
-#       cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
-#       export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
-#       echo "Summary of patched run: " $D4P
-#       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
-#     condition: eq( variables['Agent.OS'], 'Darwin')
-#     displayName: 'Scilit-learn testing Mac OS'
-#   - script: |
-#       . /usr/share/miniconda/etc/profile.d/conda.sh
-#       conda update -q -y conda
-#       conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
-#       conda activate CB
-#       pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
-#       pip install pandas scipy
-#       cd daal4py
-#       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
-#     condition: eq( variables['Agent.OS'], 'Linux' )
-#     displayName: 'Testing of daal4py with MPI on LINUX OS'
+   pool:
+     vmImage: $(imageName)
+   steps:
+   - task: UsePythonVersion@0
+     displayName: 'Use Python $(python.version)'
+     inputs:
+       versionSpec: '$(python.version)'
+   - script: |
+       pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
+       pip install pytest pandas scikit-learn
+       pip install numpy==1.19.5
+     displayName: 'Install daal4py'
+   - script: |
+       git clone https://github.com/IntelPython/daal4py.git
+       cd daal4py
+     displayName: 'Clone of daal4py'
+   - script: |
+       echo "python -c import daal4py"
+       python -c "import daal4py"
+       echo "python -m unittest discover -v -s tests -p test*.py"
+       python -m unittest discover -v -s daal4py/tests -p test*.py
+       pytest --pyargs daal4py/daal4py/sklearn/
+     displayName: 'Testing of daal4py'
+   - script: |
+       pip install pyyaml
+       export DAAL4PY_ROOT=$(pwd)/daal4py
+       cd daal4py/.circleci
+       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
+       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
+       cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
+       export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+       echo "Summary of patched run: " $D4P
+       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
+     condition: eq( variables['Agent.OS'], 'Linux' )
+     displayName: 'Scilit-learn testing Linux'
+   - script: |
+       pip install pyyaml
+       export DAAL4PY_ROOT=$(pwd)/daal4py
+       cd daal4py/.circleci
+       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --absolute --reduced)
+       echo "-m daal4py -m pytest ${DESELECTED_TESTS} -q -ra --disable-warnings --pyargs sklearn"
+       cd && ((python -m daal4py -m pytest ${DESELECTED_TESTS} -ra --disable-warnings --pyargs sklearn | tee ~/d4p.out) || true)
+       export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+       echo "Summary of patched run: " $D4P
+       python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
+     condition: eq( variables['Agent.OS'], 'Darwin')
+     displayName: 'Scilit-learn testing Mac OS'
+   - script: |
+       . /usr/share/miniconda/etc/profile.d/conda.sh
+       conda update -q -y conda
+       conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
+       conda activate CB
+       pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple daal4py
+       pip install pandas scipy
+       cd daal4py
+       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
+     condition: eq( variables['Agent.OS'], 'Linux' )
+     displayName: 'Testing of daal4py with MPI on LINUX OS'
  
 - job: daalp4yPyPiWithVEnv
   strategy:
@@ -121,7 +121,7 @@ jobs:
       windows - python36:
         imageName: 'windows-latest'
         python.version: '3.6'
-        pythonpypi: 'cp36-cp36m-win_amd64'
+        pythonpypi: 'cp37-cp37m-win_amd64'
       windows - python38:
         imageName: 'windows-latest'
         python.version: '3.8'
