@@ -81,6 +81,19 @@ jobs:
     displayName: 'Testing of daal4py'
   - script: |
       pip install pyyaml
+#      export DAAL4PY_ROOT=$(pwd)/daal4py
+      cd daal4py\.circleci
+#      set DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
+      echo "-m daal4py -m pytest -q -ra --disable-warnings --pyargs sklearn"
+      set IDP_SKLEARN_VERBOSE=INFO
+      python -m daal4py -m pytest -ra --disable-warnings --pyargs sklearn
+#      export D4P=$(grep -E "=(\s\d*\w*,?)+ in .*\s=" ~/d4p.out)
+#      echo "Summary of patched run: " $D4P
+#      python ${DAAL4PY_ROOT}/.circleci/compare_runs.py
+    condition: eq( variables['Agent.OS'], 'Windows' )
+    displayName: 'Scilit-learn testing Windows'
+  - script: |
+      pip install pyyaml
       export DAAL4PY_ROOT=$(pwd)/daal4py
       cd daal4py/.circleci
       export DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
