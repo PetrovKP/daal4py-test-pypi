@@ -77,12 +77,12 @@ jobs:
       python -c "import daal4py"
       echo "python -m unittest discover -v -s tests -p test*.py"
       python -m unittest discover -v -s daal4py/tests -p test*.py
-#      pytest --pyargs daal4py/daal4py/sklearn/
+      pytest --pyargs sklearn/
     displayName: 'Testing of daal4py'
   - script: |
-      pip install pyyaml
+#      pip install pyyaml
 #      export DAAL4PY_ROOT=$(pwd)/daal4py
-      cd daal4py\.circleci
+#      cd daal4py\.circleci
 #      set DESELECTED_TESTS=$(python deselect_tests.py ../deselected_tests.yaml --reduced)
       echo "-m daal4py -m pytest -q -ra --disable-warnings --pyargs sklearn"
       set IDP_SKLEARN_VERBOSE=INFO
