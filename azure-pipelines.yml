@@ -77,7 +77,7 @@ jobs:
       python -c "import daal4py"
       echo "python -m unittest discover -v -s tests -p test*.py"
       python -m unittest discover -v -s daal4py/tests -p test*.py
-      pytest --pyargs sklearn/
+      pytest --pyargs daal4py/daal4py/sklearn/
     displayName: 'Testing of daal4py'
 #  - script: |
 #      echo "-m daal4py -m pytest -q -ra --disable-warnings --pyargs sklearn"
