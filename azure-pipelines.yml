@@ -24,7 +24,7 @@ jobs:
     inputs:
       versionSpec: '$(python.version)'
   - script: |
-      pip install daal4py-2021.1-cp39-cp39-macosx_10_15_x86_64.whl
+      pip install daal4py-2021.1-2-cp39-cp39-macosx_10_15_x86_64.whl
       pip install pytest pandas scikit-learn
       pip install numpy==1.19.5
     displayName: 'Install daal4py'
@@ -68,7 +68,7 @@ jobs:
       conda update -q -y conda
       conda create -q -y -n CB -c conda-forge -c intel python=$(python.version) impi_rt
       conda activate CB
-      pip install daal4py-2021.1-cp39-cp39-macosx_10_15_x86_64.whl
+      pip install daal4py-2021.1-2-cp39-cp39-macosx_10_15_x86_64.whl
       pip install pandas scipy
       cd daal4py
       mpirun -n 4 python -m unittest discover -v -s tests -p spmd*.py
@@ -96,7 +96,7 @@ jobs:
       conda update -y -q conda
       conda create -q -y -n CB python=$(python.version)
       call activate CB
-      pip install daal4py-2021.1-cp39-cp39-macosx_10_15_x86_64.whl
+      pip install daal4py-2021.1-2-cp39-cp39-macosx_10_15_x86_64.whl
       pip install pytest pandas scikit-learn
     displayName: 'Install daal4py'
   - script: |
