@@ -40,7 +40,7 @@ jobs:
     vmImage: $(imageName)
   steps:
   - script: |
-      pip install daal4py scikit-learn libxml2
+      pip install daal4py scikit-learn
       pip install pytest pandas
     displayName: 'Install daal4py'
   - script: |
@@ -48,6 +48,33 @@ jobs:
     displayName: 'Clone of daal4py'
   - script: |
       export OCL_ICD_FILENAMES=libintelocl.so
+      python -c "import daal4py"
+      # python daal4py/examples/run_examples.py
+      python -m daal4py daal4py/examples/sycl/sklearn_sycl.py
+    displayName: 'Testing daal4py'
+- job: daalp4pyCondaiWindows
+  strategy:
+    matrix:
+      ubuntu:
+        imageName: 'windows-latest'
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: Add conda to PATH
+  - script: |
+      conda update -q -y conda
+      conda create -q -y -n CB -c intel python=3.7 daal4py scikit-learn libxml2
+      call activate CB
+      pip install pytest pandas
+    displayName: 'Install daal4py'
+  - script: |
+      git clone https://github.com/IntelPython/daal4py.git
+    displayName: 'Clone of daal4py'
+  - script: |
+      call activate CB
+      dir %CONDA_PREFIX%/lib
+      set OCL_ICD_FILENAMES=libintelocl.so
       python -c "import daal4py"
       # python daal4py/examples/run_examples.py
       python -m daal4py daal4py/examples/sycl/sklearn_sycl.py
